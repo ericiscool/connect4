@@ -1,17 +1,18 @@
 from itertools import cycle
-import numpy as np
-import random
+from board import Board
+from player import CommandLinePlayer, BetterRandomPlayer
 
 ROWS = 6
 COLUMNS = 7
 STREAK = 4
 
 
-from board import Board
-from player import CommandLinePlayer, BetterRandomPlayer
-
 class Game():
-    """ The game control.  Contains game parameters, the board, and the players """
+    """
+    The game controler.
+    Contains game parameters, the board, and the players.
+    """
+
     def __init__(self, rows, columns, streak):
         self.board = Board(ROWS, COLUMNS, STREAK)
         self.players = []
@@ -21,10 +22,11 @@ class Game():
 
     def add_player(self, player):
         self.players.append(player)
-    
+
     def set_opponents(self):
         self.players[0].opponent = self.players[1]
-        self.players[1].opponent = self.players[0]   
+        self.players[1].opponent = self.players[0]
+
 
 def main_loop():
     # Initialize the Game
@@ -43,12 +45,13 @@ def main_loop():
         current_player = next(player_gen)
         move = current_player.get_move(game.board)
         game.board.place_piece(move, current_player)
-        
+
         # Print congrats if the game is over
         if game.board.is_winning_board(current_player):
             game.board.print_board()
             print("Yayyyy")
             game_over = True
+
 
 if __name__ == "__main__":
     main_loop()

@@ -1,34 +1,39 @@
-""" 
+"""
 Contains all of the connect4 players agents
 """
 
-from board import Board
 import copy
 import random
 
+
 class GenericPlayer():
     """ The generic type that all agents must extend """
+
     def __init__(self, name: str, number: int, game):
         self.name = name
         self.number = number
         self.opponent = None
         self.game = game
-    
+
     def get_move(self, board):
         """ Given the board, return the players move as a column index """
         pass
 
+
 class RandomPlayer(GenericPlayer):
     """ agent that chooses random move """
+
     def get_move(self, board):
         while True:
             proposed_column = random.choice(range(self.game.columns))
             if board.is_valid_move(proposed_column):
                 print(f"{self.name} is playing at column {proposed_column}")
                 return proposed_column
-    
+
+
 class BetterRandomPlayer(GenericPlayer):
     """ agent that chooses random move """
+
     def get_move(self, board):
         for col in board.possible_moves():
             board_copy = copy.deepcopy(board)
@@ -44,19 +49,20 @@ class BetterRandomPlayer(GenericPlayer):
 
 class CommandLinePlayer(GenericPlayer):
     """ Users that are playing through the command line """
+
     def get_move(self, board):
         board.print_board()
 
         # repeatedly ask for input until the user returns valid input
         while True:
-            proposed_column = input(f"{self.name:}, which column would you like to play in?")
+            proposed_column = input("{self.name:}, which column would you like to play in?")
             try:
                 proposed_column = int(proposed_column)
                 if board.is_valid_move(proposed_column):
                     return proposed_column
             except:
                 print("dummy")
-                print("If you're not gonna play right don't play at all!")            
+                print("If you're not gonna play right don't play at all!")
 
             else:
                 print("Please choose a valid move.")
