@@ -1,6 +1,6 @@
 from itertools import cycle
-from board import Board
-from player import CommandLinePlayer, BetterRandomPlayer
+from .board import Board
+from .player import CommandLinePlayer, BetterRandomPlayer
 
 ROWS = 6
 COLUMNS = 7
@@ -28,18 +28,11 @@ class Game():
         self.players[1].opponent = self.players[0]
 
 
-def main_loop():
-    # Initialize the Game
-    game = Game(ROWS, COLUMNS, STREAK)
-    game_over = False
-
-    # Setup players
-    game.add_player(CommandLinePlayer('Player 1', 1, game))
-    game.add_player(BetterRandomPlayer('Player 2', 2, game))
-    game.set_opponents()
+def main_loop(game):
 
     player_gen = cycle(game.players)
 
+    game_over = False
     # Play the loop
     while not game_over:
         current_player = next(player_gen)
@@ -54,4 +47,23 @@ def main_loop():
 
 
 if __name__ == "__main__":
-    main_loop()
+    import argparse
+    parser = argparse.ArgumentParser(description='Play connect 4')
+    parser.add_argument('--simulate', help='Game is run between two computer agents', action="store_true")
+    args = parser.parse_args()
+
+    # Initialize the Game
+    game = Game(ROWS, COLUMNS, STREAK)
+
+    # Setup players
+    if args.simulate:
+        game.add_player(BetterRandomPlayer('Player 2', 1, game))
+        game.add_player(BetterRandomPlayer('Player 2', 2, game))
+
+    else:
+        game.add_player(CommandLinePlayer('Player 1', 1, game))
+        game.add_player(BetterRandomPlayer('Player 2', 2, game))
+
+    game.set_opponents()
+
+    main_loop(game)
