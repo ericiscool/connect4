@@ -12,16 +12,19 @@ class Board():
         self.columns = columns
         self.streak = streak
         self.state = np.zeros((self.rows, self.columns))
+        self.current_player = None
+        self.players = []
 
     def possible_moves(self):
         """ Returns the legal moves available moves """
         return [col for col in range(self.columns) if self.is_valid_move(col)]
 
-    def place_piece(self, column: int, player):
+    def place_piece(self, column: int):
         """ Adds the player's peice """
         occupancy = list(self.state[:, column] == 0)
         first_open = occupancy.index(True)
-        self.state[first_open, column] = player.number
+        self.state[first_open, column] = self.current_player.number
+        self.current_player = self.current_player.opponent
         return self
 
     def is_valid_move(self, column) -> bool:

@@ -37,7 +37,7 @@ class BetterRandomPlayer(GenericPlayer):
     def get_move(self, board):
         for col in board.possible_moves():
             board_copy = copy.deepcopy(board)
-            if board_copy.place_piece(col, self.opponent).is_winning_board(self.opponent):
+            if board_copy.place_piece(col).is_winning_board(self.opponent):
                 print(f"{self.name} is playing at column {col}")
                 return col
         while True:
@@ -66,3 +66,18 @@ class CommandLinePlayer(GenericPlayer):
 
             else:
                 print("Please choose a valid move.")
+
+
+class MinMaxPlayer(GenericPlayer):
+    """ An AI player that uses minmax to choose places """
+    def get_move(self, board):
+        pass
+
+    def evaluate_value(self, board):
+        pass
+
+    def calc_max(self, board):
+        pass
+
+    def board_min(self, board):
+        pass
